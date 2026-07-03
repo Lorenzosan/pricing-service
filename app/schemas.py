@@ -6,13 +6,22 @@ from pydantic import BaseModel, Field
 # Field makes a new instance created for each model instance
 # It enforces also sign with gt=0
 
+class HealthResponse(BaseModel):
+    status: str
+
+
+class OptionResult(BaseModel):
+    price: float
+    delta: float
+
+
 class PriceRequest(BaseModel):
     spot: float = Field(..., gt=0)
     strike: float = Field(..., gt=0)
     rate: float
     volatility: float = Field(..., gt=0)
-    maturity: float = Field(..., gt=0, description="Maturity in years")
-    opt_typ: Literal["call", "put"]
+    maturity: float = Field(..., gt=0)
+    option_type: Literal["call", "put"]
 
 
 class PriceResponse(BaseModel):
@@ -20,7 +29,3 @@ class PriceResponse(BaseModel):
     delta: float
     model: str
     inputs: PriceRequest
-
-
-class HealthResponse(BaseModel):
-    status: str
